@@ -269,130 +269,372 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
 }
 
 /* ═══════════════════════════════════════════
-   HERO — FULL CINEMATIC
+   HERO SLIDER — FULLSCREEN IMAGE CAROUSEL
    ═══════════════════════════════════════════ */
 .hero {
   position: relative;
   height: 100vh;
   min-height: 700px;
   overflow: hidden;
-  display: flex;
-  align-items: flex-end;
 }
-.hero-image-frame {
-  position: absolute;
-  top: 5%;
-  bottom: 5%;
-  left: 35%;
-  right: -3%;
-  clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 15%);
-  will-change: transform;
-}
-.hero-bg {
-  position: absolute;
-  inset: -8%;
-  will-change: transform;
-}
-.hero-bg img {
-  transform: scale(1.15);
-  transition: transform 0.4s var(--ease), filter 0.3s;
-  filter: saturate(1.4) brightness(0.55) contrast(1.1);
-}
-.hero.loaded .hero-bg img { transform: scale(1); }
 
+/* Slides */
+.hero-slider {
+  position: absolute;
+  inset: 0;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+  z-index: 0;
+}
+.hero-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.3) brightness(0.45) contrast(1.1);
+  transform: scale(1.08);
+  transition: transform 8s var(--ease);
+}
+.hero-slide.active img {
+  transform: scale(1);
+}
+
+/* Overlay gradient — darkens bottom for text */
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background:
-    radial-gradient(ellipse at 20% 80%, rgba(90, 56, 37, 0.35) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(34, 22, 16, 0.5) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 80%, rgba(26, 16, 8, 0.3) 0%, transparent 50%),
     linear-gradient(180deg,
-      rgba(13, 7, 4, 0.15) 0%,
-      rgba(13, 7, 4, 0.0) 25%,
-      rgba(13, 7, 4, 0.1) 50%,
-      rgba(13, 7, 4, 0.5) 75%,
+      rgba(13, 7, 4, 0.1) 0%,
+      rgba(13, 7, 4, 0.0) 30%,
+      rgba(13, 7, 4, 0.5) 70%,
       rgba(13, 7, 4, 0.95) 100%
     );
+  pointer-events: none;
 }
 
 .hero-bloom {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background:
-    radial-gradient(circle at 25% 75%, rgba(184, 132, 90, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 80% 25%, rgba(90, 56, 37, 0.08) 0%, transparent 35%);
+    radial-gradient(circle at 25% 75%, rgba(184, 132, 90, 0.08) 0%, transparent 45%);
   pointer-events: none;
   animation: bloomPulse 8s ease-in-out infinite;
 }
 @keyframes bloomPulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.5; }
 }
 
-.hero-content {
+/* Per-slide text content */
+.hero-slide-content {
   position: absolute;
-  bottom: 28%;
-  left: 0;
-  z-index: 2;
-  padding: 0 4rem;
-  max-width: 950px;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 4rem 10rem;
+  max-width: 900px;
 }
-.hero-tag {
+.hero-slide-tag {
   font-size: 0.6rem;
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--glow);
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out) 0.3s, transform 0.6s var(--ease-out) 0.3s;
+}
+.hero-slide.active .hero-slide-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-slide-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.08;
+  margin-bottom: 1.5rem;
+  color: var(--cream);
   opacity: 0;
   transform: translateY(30px);
-  animation: hReveal 0.5s var(--ease-out) 1.8s forwards;
+  transition: opacity 0.8s var(--ease-out) 0.4s, transform 0.8s var(--ease-out) 0.4s;
 }
-.hero-title {
+.hero-slide.active .hero-slide-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-slide-title em {
+  font-style: italic;
+  color: var(--glow);
+}
+.hero-slide-desc {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 420px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out) 0.6s, transform 0.6s var(--ease-out) 0.6s;
+}
+.hero-slide.active .hero-slide-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slider navigation dots */
+.hero-nav {
+  position: absolute;
+  bottom: 4.5rem;
+  right: 4rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 200, 176, 0.4);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.4s var(--ease);
+  padding: 0;
+}
+.hero-dot.active {
+  background: var(--glow);
+  border-color: var(--glow);
+  transform: scale(1.3);
+}
+.hero-dot:hover {
+  border-color: var(--cream);
+}
+
+/* Slide counter */
+.hero-counter {
+  position: absolute;
+  bottom: 4.5rem;
+  right: 8rem;
+  z-index: 10;
   font-family: var(--serif);
-  font-size: clamp(1.75rem, 4.25vw, 3.75rem);
-  font-weight: 200;
-  line-height: 1.05;
-  margin-bottom: 2.5rem;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--muted);
+}
+.hero-counter .current {
+  font-size: 1.4rem;
+  color: var(--cream);
+  font-weight: 400;
+}
+
+/* Progress bar */
+.hero-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 10;
+  background: rgba(184, 132, 90, 0.1);
+}
+.hero-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--glow), var(--gold));
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Arrow nav */
+.hero-arrows {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 0.6rem;
+}
+.hero-arrow {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 200, 176, 0.2);
+  background: rgba(13, 7, 4, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  padding: 0;
+}
+.hero-arrow svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--cream);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.hero-arrow:hover {
+  background: var(--warm);
+  border-color: var(--warm);
+}
+
+/* Rating badge (kept from before) */
+.hero-rating {
+  position: absolute;
+  top: 50%;
+  right: 4rem;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.4rem;
+  background: rgba(13, 7, 4, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 132, 90, 0.15);
+  border-radius: 50px;
+}
+.hero-rating-stars {
+  display: flex;
+  gap: 2px;
+}
+.hero-rating-stars svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--gold);
+}
+.hero-rating-score {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 400;
   color: var(--cream);
 }
-.hero-title .line {
-  display: block;
-  overflow: hidden;
-}
-.hero-title .line span {
-  display: inline-block;
-  transform: translateY(120%);
-  opacity: 0;
-}
-.hero-title .line:nth-child(1) span { animation: hReveal 1.3s var(--ease-out) 2.3s forwards; }
-.hero-title .line:nth-child(2) span { animation: hReveal 0.7s var(--ease-out) 2.05s forwards; }
-.hero-title .line:nth-child(3) span { animation: hReveal 0.7s var(--ease-out) 2.2s forwards; }
-.hero-title em { font-style: italic; color: var(--glow); }
-
-.hero-desc {
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 2;
+.hero-rating-label {
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--muted);
-  max-width: 500px;
-  opacity: 0;
-  transform: translateY(25px);
-  animation: hReveal 0.5s var(--ease-out) 2.4s forwards;
 }
-@keyframes hReveal { to { opacity: 1; transform: translateY(0); } }
 
+/* Feature cards */
+.hero-cards {
+  position: absolute;
+  bottom: 3%;
+  left: 4rem;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+}
+.hero-card {
+  padding: 1.2rem 1.5rem;
+  background: rgba(13, 7, 4, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 132, 90, 0.1);
+  border-radius: 12px;
+  min-width: 200px;
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+.hero-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 132, 90, 0.25);
+}
+.hero-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(184, 132, 90, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+}
+.hero-card-icon svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--glow);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.hero-card-title {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+}
+.hero-card-desc {
+  font-size: 0.68rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.hero-card-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 0.5rem;
+}
+.hero-card-stars svg {
+  width: 11px;
+  height: 11px;
+  fill: var(--gold);
+}
+.hero-card-big {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-card-big .hero-card-num {
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.hero-card-big .hero-card-sublabel {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Scroll indicator */
 .hero-scroll {
   position: absolute;
   bottom: 3rem;
   right: 4rem;
-  z-index: 2;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
-  opacity: 0;
-  animation: hReveal 0.5s var(--ease-out) 2.6s forwards;
 }
 .hero-scroll span {
   font-size: 0.55rem;
@@ -402,13 +644,65 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   writing-mode: vertical-lr;
 }
 .scroll-line {
-  width: 1px; height: 50px;
+  width: 1px;
+  height: 40px;
   background: linear-gradient(180deg, var(--glow), transparent);
   animation: sPulse 2.5s ease-in-out infinite;
 }
 @keyframes sPulse {
   0%, 100% { opacity: 1; transform: scaleY(1); }
   50% { opacity: 0.2; transform: scaleY(0.4); }
+}
+
+/* Light mode overrides */
+body.light-mode .hero-slide img {
+  filter: saturate(1.1) brightness(0.6) contrast(1.05);
+}
+body.light-mode .hero-overlay {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(26, 16, 8, 0.2) 0%, transparent 50%),
+    linear-gradient(180deg,
+      rgba(26, 16, 8, 0.05) 0%,
+      rgba(26, 16, 8, 0.0) 30%,
+      rgba(26, 16, 8, 0.45) 70%,
+      rgba(26, 16, 8, 0.9) 100%
+    );
+}
+body.light-mode .hero-card,
+body.light-mode .hero-rating {
+  background: rgba(247, 243, 236, 0.6);
+  border-color: rgba(138, 94, 48, 0.15);
+}
+body.light-mode .hero-arrow {
+  background: rgba(247, 243, 236, 0.5);
+  border-color: rgba(138, 94, 48, 0.15);
+}
+body.light-mode .hero-arrow:hover {
+  background: var(--warm);
+  color: var(--cream);
+}
+body.light-mode .hero-dot {
+  border-color: rgba(138, 94, 48, 0.3);
+}
+body.light-mode .hero-dot.active {
+  background: var(--glow);
+  border-color: var(--glow);
+}
+
+@media (max-width: 1024px) {
+  .hero-rating { display: none; }
+  .hero-cards { display: none; }
+  .hero-slide-content { padding: 0 2rem 6rem; }
+  .hero-nav { right: 2rem; bottom: 3rem; }
+  .hero-counter { right: 6rem; bottom: 3rem; }
+  .hero-arrows { bottom: 3rem; }
+}
+@media (max-width: 768px) {
+  .hero-slide-content { padding: 0 1.5rem 5rem; }
+  .hero-scroll { display: none; }
+  .hero-arrows { display: none; }
+  .hero-nav { bottom: 2rem; right: 1.5rem; }
+  .hero-counter { display: none; }
 }
 
 /* ═══════════════════════════════════════════
@@ -1731,24 +2025,42 @@ body, body * {
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- Hero Slider -->
 <section class="hero" id="hero">
-  <div class="hero-image-frame">
-    <div class="hero-bg">
-      <img src="assets/hero.jpg" alt="Luxurious interior">
+
+  <div class="hero-slider" id="heroSlider">
+    <!-- Slide 1 -->
+    <div class="hero-slide active" data-index="0">
+      <img src="assets/hero.jpg" alt="Luxurious living room">
+      <div class="hero-slide-content">
+        <div class="hero-slide-tag">Interior Design Studio</div>
+        <h1 class="hero-slide-title">Where Space<br>Becomes <em>Soul</em></h1>
+        <p class="hero-slide-desc">We craft environments that breathe with intention &mdash; spaces that hold memory and tell your story without saying a word.</p>
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="hero-slide" data-index="1">
+      <img src="assets/kitchen.jpg" alt="Modern kitchen design">
+      <div class="hero-slide-content">
+        <div class="hero-slide-tag">Kitchens</div>
+        <h1 class="hero-slide-title">Kitchens<br>That <em>Inspire</em></h1>
+        <p class="hero-slide-desc">From shaker classics to handleless minimalism &mdash; designed around how you actually cook, gather, and live.</p>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="hero-slide" data-index="2">
+      <img src="assets/tvunit.jpg" alt="Living room media unit">
+      <div class="hero-slide-content">
+        <div class="hero-slide-tag">Living Spaces</div>
+        <h1 class="hero-slide-title">Living<br><em>Redefined</em></h1>
+        <p class="hero-slide-desc">Media walls, bespoke joinery, and spatial planning that turns everyday rooms into experiences.</p>
+      </div>
     </div>
   </div>
+
   <div class="hero-overlay"></div>
   <div class="hero-bloom"></div>
-  <div class="hero-content">
-    <div class="hero-tag">Interior Design Studio</div>
-    <h1 class="hero-title">
-      <span class="line"><span>Where Space</span></span>
-      <span class="line"><span>Becomes</span></span>
-      <span class="line"><span><em>Soul</em></span></span>
-    </h1>
-    <p class="hero-desc">We craft environments that breathe with intention &mdash; spaces that hold memory, invite stillness, and tell your story without saying a word.</p>
-  </div>
+
   <!-- Rating badge -->
   <div class="hero-rating">
     <div class="hero-rating-stars">
@@ -1790,6 +2102,30 @@ body, body * {
     </div>
   </div>
 
+  <!-- Slider nav -->
+  <div class="hero-counter">
+    <span class="current">01</span> / 03
+  </div>
+  <div class="hero-nav" id="heroNav">
+    <button class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
+    <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
+    <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="hero-arrows">
+    <button class="hero-arrow" id="heroPrev" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <button class="hero-arrow" id="heroNext" aria-label="Next slide">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="hero-progress">
+    <div class="hero-progress-bar" id="heroProgress"></div>
+  </div>
+
+  <!-- Scroll indicator -->
   <div class="hero-scroll">
     <span>Scroll</span>
     <div class="scroll-line"></div>
@@ -2476,6 +2812,91 @@ class TextScramble {
   }, { threshold: 0.1 });
   obs.observe(footer);
 })();
+
+/* ═══════════════════════════════════════════
+   HERO SLIDER — AUTO-CYCLE + MANUAL NAV
+   ═══════════════════════════════════════════ */
+(function() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  const counter = document.querySelector('.hero-counter .current');
+  const progressBar = document.getElementById('heroProgress');
+  const prevBtn = document.getElementById('heroPrev');
+  const nextBtn = document.getElementById('heroNext');
+  const sliderWrap = document.getElementById('heroSlider');
+  const total = slides.length;
+  let current = 0;
+  let interval;
+  let progressInterval;
+  const SLIDE_DURATION = 5000; // 5s per slide
+  const PROGRESS_STEP = 50; // update every 50ms
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (index + total) % total;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    counter.textContent = String(current + 1).padStart(2, '0');
+    resetProgress();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function resetProgress() {
+    clearInterval(progressInterval);
+    let elapsed = 0;
+    progressBar.style.width = '0%';
+    progressInterval = setInterval(() => {
+      elapsed += PROGRESS_STEP;
+      const pct = (elapsed / SLIDE_DURATION) * 100;
+      progressBar.style.width = pct + '%';
+      if (elapsed >= SLIDE_DURATION) {
+        clearInterval(progressInterval);
+      }
+    }, PROGRESS_STEP);
+  }
+
+  function startAuto() {
+    stopAuto();
+    resetProgress();
+    interval = setInterval(next, SLIDE_DURATION);
+  }
+
+  function stopAuto() {
+    clearInterval(interval);
+    clearInterval(progressInterval);
+  }
+
+  // Dot clicks
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(parseInt(dot.dataset.slide));
+      startAuto();
+    });
+  });
+
+  // Arrow clicks
+  if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAuto(); });
+
+  // Pause on hover
+  if (sliderWrap) {
+    sliderWrap.addEventListener('mouseenter', stopAuto);
+    sliderWrap.addEventListener('mouseleave', startAuto);
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { prev(); startAuto(); }
+    if (e.key === 'ArrowRight') { next(); startAuto(); }
+  });
+
+  // Start after preloader
+  setTimeout(startAuto, 2500);
+})();
+
 </script>
 </body>
 </html>
