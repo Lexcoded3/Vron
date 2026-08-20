@@ -45,12 +45,12 @@ html { scroll-behavior: smooth; }
   --brown:    #221610;
   --mid:      #36221a;
   --warm:     #5a3825;
-  --glow:     #b8845a;
+  --glow:     #d8a468;
   --gold:     #c9a96e;
-  --cream:    #d8c8b0;
-  --light:    #ece0d0;
-  --offwhite: #a89880;
-  --muted:    #7a6858;
+  --cream:    #f0e6d6;
+  --light:    #f2ebe0;
+  --offwhite: #d4c8b8;
+  --muted:    #b0a090;
   --serif: 'Aquire', 'Inter', sans-serif;
   --sans: 'Inter', -apple-system, sans-serif;
   --ease: linear(0, 0.004, 0.016, 0.035, 0.063, 0.098, 0.141, 0.191, 0.25, 0.316, 0.391, 0.473, 0.563, 0.66, 0.766, 0.879, 1);
@@ -68,10 +68,10 @@ body.light-mode {
   --warm:     #9a7045;
   --glow:     #8a5e30;
   --gold:     #a07040;
-  --cream:    #2c1e12;
+  --cream:    #1a1008;
   --light:    #1a1008;
-  --offwhite: #4a3f35;
-  --muted:    #7a6e62;
+  --offwhite: #3a2e22;
+  --muted:    #5a5048;
 }
 
 html { overflow-x: hidden; }
@@ -261,7 +261,7 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   letter-spacing: 0.18em;
   text-transform: uppercase;
   padding: 0.75rem 1.8rem;
-  border: 1px solid rgba(184, 132, 90, 0.35);
+  border: 1px solid rgba(200, 180, 160, 0.5);
   color: var(--cream);
   transition: all 0.35s var(--bounce);
 }
@@ -1362,7 +1362,7 @@ body.light-mode .hero-dot.active {
   font-size: 0.95rem;
   font-weight: 300;
   line-height: 1.9;
-  color: var(--muted);
+  color: var(--offwhite);
   margin-bottom: 3rem;
   max-width: 450px;
 }
@@ -1372,7 +1372,7 @@ body.light-mode .hero-dot.active {
   align-items: center;
   gap: 1.2rem;
   padding: 1.1rem 2.5rem;
-  border: 1px solid rgba(184, 132, 90, 0.35);
+  border: 1px solid rgba(200, 180, 160, 0.5);
   font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -1417,7 +1417,7 @@ body.light-mode .hero-dot.active {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--glow);
   margin-bottom: 0.6rem;
 }
 .cta-field input,
@@ -1433,11 +1433,11 @@ body.light-mode .hero-dot.active {
 .cta-field textarea { resize: none; height: 80px; }
 .cta-field input::placeholder,
 .cta-field textarea::placeholder {
-  color: rgba(122, 104, 88, 0.4);
+  color: rgba(200, 180, 160, 0.6);
 }
 .cta-field input:focus,
 .cta-field textarea:focus {
-  border-bottom-color: var(--glow);
+  border-bottom-color: var(--gold);
 }
 
 /* ═══════════════════════════════════════════
@@ -1725,7 +1725,7 @@ body.light-mode .footer-socials a:hover { color: var(--cream); }
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid rgba(184, 132, 90, 0.35);
+  border: 1px solid rgba(200, 180, 160, 0.5);
   background: transparent;
   cursor: none;
   display: flex;
@@ -1808,7 +1808,7 @@ body.light-mode .image-break .overlay {
 body.light-mode .cta-overlay {
   background:
     radial-gradient(ellipse at 25% 55%, rgba(26, 16, 8, 0.2) 0%, transparent 50%),
-    rgba(26, 16, 8, 0.5);
+    rgba(26, 16, 8, 0.35);
 }
 body.light-mode .cta-bg img {
   filter: saturate(1.1) brightness(0.6) contrast(1.1);
@@ -1889,7 +1889,7 @@ body.light-mode .cta-field textarea { color: var(--cream); }
 body.light-mode .cta-field input::placeholder,
 body.light-mode .cta-field textarea::placeholder { color: rgba(74, 63, 53, 0.4); }
 body.light-mode .cta-field input:focus,
-body.light-mode .cta-field textarea:focus { border-bottom-color: var(--glow); }
+body.light-mode .cta-field textarea:focus { border-bottom-color: var(--gold); }
 
 /* Footer */
 body.light-mode .footer { border-top-color: rgba(138, 94, 48, 0.08); }
@@ -2474,7 +2474,7 @@ body, body * {
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">V<em>ron</em></div>
-      <p>Crafting environments that breathe with intention. Based in New York, working worldwide.</p>
+      <p>Plot 2258 Naalya Kyaliwajjala Road, First Floor Yelkam Stay Building, Kampala, Uganda</p>
     </div>
     <div class="footer-col">
       <h4>Services</h4>
@@ -2497,13 +2497,14 @@ body, body * {
     <div class="footer-col">
       <h4>Connect</h4>
       <ul>
-        <li><a href="#" data-cursor="hover">hello@vroninteriors.com</a></li>
-        <li><a href="#" data-cursor="hover">+1 (212) 555-1234</a></li>
+        <li><a href="#" data-cursor="hover">engineersvronug@gmail.com</a></li>
+        <li><a href="#" data-cursor="hover">+256 705 578 246</a></li>
+        <li><a href="#" data-cursor="hover">+256 780 236 684</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>&copy; 2026 Vron Interiors. All rights reserved.</span>
+    <span>&copy; 2025 by Vron Engineering Limited. Proudly created By Vron Engineering Limited</span>
     <div class="footer-socials">
       <a href="#" data-cursor="hover" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
       <a href="#" data-cursor="hover" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.25 2.67 7.9 6.44 9.34-.09-.78-.17-1.98.04-2.83.18-.78 1.17-4.97 1.17-4.97s-.3-.6-.3-1.48c0-1.39.81-2.43 1.81-2.43.85 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.15-1.88 3.15-4.59 0-2.4-1.72-4.08-4.18-4.08-2.85 0-4.52 2.13-4.52 4.35 0 .86.33 1.78.74 2.28.08.1.09.19.07.29l-.28 1.12c-.04.19-.15.23-.35.14-1.31-.61-2.13-2.53-2.13-4.07 0-3.31 2.41-6.36 6.93-6.36 3.64 0 6.47 2.59 6.47 6.06 0 3.61-2.28 6.52-5.44 6.52-1.06 0-2.06-.55-2.4-1.2l-.66 2.5c-.24.91-.88 2.06-1.32 2.76A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg></a>
