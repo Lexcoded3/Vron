@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth & Grain — Kitchen Design Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soot:#1C1815;
+    --walnut:#4A2F23;
+    --walnut-light:#6B4634;
+    --plaster:#EDE6DA;
+    --plaster-dim:#E2D9C8;
+    --brass:#B8895D;
+    --brass-light:#D3A97D;
+    --ivory:#F5F0E6;
+    --ink:#241E1A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--plaster);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 48px;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  a{color:inherit;text-decoration:none;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--brass-light);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--brass-light);}
+
+  /* ---------- NAV ---------- */
+  nav{
+    background:var(--soot);
+    padding:26px 0;
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:'Fraunces',serif;
+    font-size:21px;
+    color:var(--ivory);
+    display:flex;align-items:center;gap:10px;
+  }
+  .logo-mark{
+    width:26px;height:26px;
+    border:1px solid var(--brass);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--brass-light);
+  }
+  .nav-links{display:flex;gap:36px;}
+  .nav-links a{
+    color:var(--ivory);
+    font-size:14px;
+    opacity:0.78;
+    transition:opacity .2s;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    border:1px solid var(--brass);
+    color:var(--brass-light);
+    font-size:13px;
+    padding:10px 20px;
+    border-radius:2px;
+    transition:background .2s,color .2s;
+  }
+  .nav-cta:hover{background:var(--brass);color:var(--soot);}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    background:var(--soot);
+    color:var(--ivory);
+    padding:88px 0 0;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:40px;
+    align-items:center;
+  }
+  .hero-copy h1{
+    font-size:60px;
+    line-height:1.04;
+    margin:22px 0 26px;
+    color:var(--ivory);
+  }
+  .hero-copy h1 em{font-style:italic;color:var(--brass-light);}
+  .hero-copy p{
+    font-size:16.5px;
+    color:#C9C0B4;
+    max-width:440px;
+    margin-bottom:34px;
+  }
+  .hero-actions{display:flex;align-items:center;gap:24px;}
+  .btn-primary{
+    background:var(--brass);
+    color:var(--soot);
+    font-size:14px;
+    font-weight:500;
+    padding:15px 28px;
+    border-radius:2px;
+    display:inline-flex;align-items:center;gap:10px;
+    transition:background .2s, transform .2s;
+  }
+  .btn-primary:hover{background:var(--brass-light);transform:translateY(-1px);}
+  .link-secondary{
+    font-size:14px;
+    color:var(--ivory);
+    border-bottom:1px solid rgba(245,240,230,0.3);
+    padding-bottom:2px;
+  }
+
+  .hero-art{position:relative;}
+  .hero-illustration{width:100%;height:440px;display:block;cursor:grab;}
+  .hero-illustration:active{cursor:grabbing;}
+  .hero-illustration canvas{display:block;}
+  .hero-art-hint{
+    position:absolute;top:14px;right:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;
+    color:#8f8578;
+    pointer-events:none;
+  }
+  .rating-badge{
+    position:absolute;
+    left:-10px;bottom:36px;
+    background:var(--plaster);
+    color:var(--ink);
+    padding:18px 22px;
+    border-radius:3px;
+    display:flex;align-items:center;gap:14px;
+    box-shadow:0 24px 48px rgba(0,0,0,0.35);
+  }
+  .rating-num{
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    font-weight:600;
+  }
+  .rating-badge .rlabel{font-size:12.5px;color:#5c5347;line-height:1.35;}
+  .rating-badge .stars{color:var(--brass);font-size:12px;letter-spacing:2px;margin-top:2px;}
+
+  /* ---------- MATERIAL STRIP (signature) ---------- */
+  .material-strip{
+    background:var(--walnut);
+    padding:0;
+  }
+  .strip-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+  }
+  .swatch{
+    padding:26px 30px;
+    border-right:1px solid rgba(245,240,230,0.12);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .swatch:last-child{border-right:none;}
+  .swatch-chip{width:100%;height:34px;border-radius:2px;}
+  .chip-walnut{background:linear-gradient(100deg,#3B2418,#6B4634 50%,#3B2418);}
+  .chip-brass{background:linear-gradient(100deg,#8C6640,#D3A97D 50%,#8C6640);}
+  .chip-limestone{background:linear-gradient(100deg,#B8AF9C,#DED5C2 50%,#B8AF9C);}
+  .chip-boucle{background:linear-gradient(100deg,#8A8074,#C7BFAF 50%,#8A8074);}
+  .swatch-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;color:var(--brass-light);text-transform:uppercase;}
+  .swatch-name{font-size:14px;color:var(--ivory);}
+
+  /* ---------- STAT CARDS ---------- */
+  .stats-section{
+    background:var(--plaster);
+    padding:64px 0 100px;
+    margin-top:-1px;
+  }
+  .stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1.25fr 1fr;
+    gap:20px;
+    transform:translateY(-84px);
+  }
+  .card{
+    background:var(--ivory);
+    border-radius:4px;
+    padding:32px;
+    box-shadow:0 30px 60px rgba(28,24,21,0.10);
+    transform:perspective(900px) rotateX(0deg) translateY(0);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .card:hover{
+    transform:perspective(900px) rotateX(3deg) translateY(-6px);
+    box-shadow:0 40px 70px rgba(28,24,21,0.16);
+  }
+  .swatch{transition:transform .3s ease;}
+  .swatch:hover{transform:translateY(-4px);}
+  .card-dark{background:var(--soot);color:var(--ivory);}
+  .check-ring{
+    width:44px;height:44px;
+    border:1px solid var(--brass);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--brass);
+    font-size:18px;
+    margin-bottom:20px;
+  }
+  .card h3{font-size:22px;margin-bottom:10px;}
+  .card-dark h3{color:var(--ivory);}
+  .stars-row{color:var(--brass);letter-spacing:3px;font-size:14px;}
+  .card-feature{background:var(--walnut);color:var(--ivory);}
+  .swatch-icon{
+    width:44px;height:44px;
+    border:1px solid var(--brass-light);
+    border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+    font-size:18px;color:var(--brass-light);
+  }
+  .card p.sub{color:#7d7466;font-size:14.5px;}
+  .card-feature p.sub{color:#C9BBAC;}
+  .stat-number{
+    font-family:'Fraunces',serif;
+    font-size:44px;
+    font-weight:500;
+    color:var(--ivory);
+  }
+  .stat-label{font-size:14px;color:#B7ADA0;margin-top:6px;}
+
+  /* ---------- PROCESS ---------- */
+  .process{padding:20px 0 110px;}
+  .process-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:56px;
+    gap:40px;
+  }
+  .process-head h2{font-size:38px;max-width:460px;}
+  .process-head p{color:#7d7466;font-size:15px;max-width:320px;}
+  .process-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:rgba(28,24,21,0.1);
+  }
+  .process-step{
+    background:var(--plaster);
+    padding:36px 34px 40px;
+  }
+  .step-mark{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--brass);
+    margin-bottom:24px;
+  }
+  .process-step h3{font-size:20px;margin-bottom:10px;}
+  .process-step p{font-size:14.5px;color:#7d7466;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--soot);
+    color:#B7ADA0;
+    padding:52px 0;
+  }
+  footer .wrap{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:20px;
+  }
+  footer .logo{font-size:18px;}
+  .foot-links{display:flex;gap:28px;font-size:13.5px;}
+  .foot-links a:hover{color:var(--ivory);}
+
+  @media (max-width:880px){
+    .wrap{padding:0 24px;}
+    .nav-links{display:none;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-copy h1{font-size:42px;}
+    .hero-art{margin-top:40px;}
+    .strip-row{grid-template-columns:repeat(2,1fr);}
+    .swatch{border-bottom:1px solid rgba(245,240,230,0.12);}
+    .stats-grid{grid-template-columns:1fr;transform:none;margin-top:40px;}
+    .process-head{flex-direction:column;align-items:flex-start;}
+    .process-grid{grid-template-columns:1fr;}
+    .stats-section{padding-bottom:60px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="logo-mark">H&G</span>Hearth & Grain</div>
+    <div class="nav-links">
+      <a href="#">Kitchens</a>
+      <a href="#">Process</a>
+      <a href="#">Studio</a>
+      <a href="#">Contact</a>
+    </div>
+    <a class="nav-cta" href="#">Book a consult</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Bespoke kitchen studio, since 2013</p>
+        <h1>Kitchens built<br>around how you<br><em>actually</em> cook.</h1>
+        <p>We design and build kitchens the same way a good chef sets up a station — every surface, drawer, and sightline earns its place. No showroom filler, no trend-chasing.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#">Book a consult →</a>
+          <a class="link-secondary" href="#">See recent kitchens</a>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <div id="kitchen3d" class="hero-illustration"></div>
+        <div class="hero-art-hint">drag to look around</div>
+        <div class="rating-badge">
+          <div class="rating-num">4.9</div>
+          <div>
+            <div class="rlabel">from 214 finished kitchens</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="material-strip">
+  <div class="strip-row">
+    <div class="swatch">
+      <div class="swatch-chip chip-walnut"></div>
+      <div><div class="swatch-label">01 — Cabinetry</div><div class="swatch-name">Rift-sawn walnut veneer</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-chip chip-brass"></div>
+      <div><div class="swatch-label">02 — Hardware</div><div class="swatch-name">Hand-brushed brass</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-chip chip-limestone"></div>
+      <div><div class="swatch-label">03 — Surfaces</div><div class="swatch-name">Honed Turkish limestone</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-chip chip-boucle"></div>
+      <div><div class="swatch-label">04 — Seating</div><div class="swatch-name">Undyed wool bouclé</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="card">
+        <div class="check-ring">✓</div>
+        <h3>Rated for follow-through</h3>
+        <p class="sub">Clients rate us highest on hitting the timeline we quote.</p>
+        <div class="stars-row" style="margin-top:16px;">★★★★★</div>
+      </div>
+      <div class="card card-feature">
+        <div class="swatch-icon">◧</div>
+        <h3>One studio, start to finish</h3>
+        <p class="sub">The person who draws your kitchen is the one who's on site the day it's installed.</p>
+      </div>
+      <div class="card card-dark">
+        <div class="stat-number">214</div>
+        <div class="stat-label">Kitchens delivered across the region</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <div class="process-head">
+      <h2>Three visits. No renderings you'll never see built.</h2>
+      <p>Every kitchen goes through the same three stages — nothing skipped, nothing rushed.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step">
+        <div class="step-mark">STAGE 01</div>
+        <h3>Walk the space</h3>
+        <p>We measure, ask how you actually cook and host, and note what the current kitchen gets wrong.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-mark">STAGE 02</div>
+        <h3>Draw and select</h3>
+        <p>A full layout and material palette you can touch — not a moodboard, the actual veneer and stone.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-mark">STAGE 03</div>
+        <h3>Build on site</h3>
+        <p>Our own joiners install, on the week we told you at the start — with weekly walkthroughs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">Hearth & Grain</div>
+    <div class="foot-links">
+      <a href="#">Kitchens</a>
+      <a href="#">Process</a>
+      <a href="#">Studio</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const mount = document.getElementById('kitchen3d');
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, mount.clientWidth / mount.clientHeight, 0.1, 100);
+camera.position.set(4.6, 2.0, 4.6);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(mount.clientWidth, mount.clientHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+mount.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, -0.25, -0.2);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.enableZoom = false;
+controls.enablePan = false;
+controls.minPolarAngle = 0.95;
+controls.maxPolarAngle = 1.35;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.55;
+
+const ambient = new THREE.AmbientLight(0x6b5744, 0.9);
+scene.add(ambient);
+const key = new THREE.DirectionalLight(0xfff1dc, 1.1);
+key.position.set(3.5, 4.5, 2.5);
+scene.add(key);
+const warm = new THREE.PointLight(0xf2c98b, 0.7, 6);
+warm.position.set(0, 1.15, 0.6);
+scene.add(warm);
+
+const walnut = new THREE.MeshStandardMaterial({ color: 0x4a2f23, roughness: 0.65, metalness: 0.05 });
+const walnutLight = new THREE.MeshStandardMaterial({ color: 0x6b4634, roughness: 0.6, metalness: 0.05 });
+const walnutDark = new THREE.MeshStandardMaterial({ color: 0x2f1d14, roughness: 0.7, metalness: 0.05 });
+const stone = new THREE.MeshStandardMaterial({ color: 0xded5c2, roughness: 0.45, metalness: 0.05 });
+const wall = new THREE.MeshStandardMaterial({ color: 0x241c17, roughness: 0.9, metalness: 0 });
+const brass = new THREE.MeshStandardMaterial({ color: 0xb8895d, roughness: 0.3, metalness: 0.85 });
+const glow = new THREE.MeshStandardMaterial({ color: 0xf2c98b, emissive: 0xf2c98b, emissiveIntensity: 1.4, roughness: 0.3 });
+
+const kitchen = new THREE.Group();
+
+const floor = new THREE.Mesh(new THREE.BoxGeometry(6, 0.05, 3.6), walnutDark);
+floor.position.set(0, -1.25, -0.2);
+kitchen.add(floor);
+
+const backWall = new THREE.Mesh(new THREE.BoxGeometry(6, 2.6, 0.08), wall);
+backWall.position.set(0, 0.05, -1.75);
+kitchen.add(backWall);
+
+const upperPositions = [-1.9, 0, 1.9];
+upperPositions.forEach((x) => {
+  const cab = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.85, 0.45), walnut);
+  cab.position.set(x, 0.85, -1.45);
+  kitchen.add(cab);
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.02, 0.02), brass);
+  strip.position.set(x, 0.44, -1.22);
+  kitchen.add(strip);
+});
+
+const lowerBase = new THREE.Mesh(new THREE.BoxGeometry(6, 0.85, 0.65), walnutDark);
+lowerBase.position.set(0, -0.78, -1.35);
+kitchen.add(lowerBase);
+
+const lowerTop = new THREE.Mesh(new THREE.BoxGeometry(6.2, 0.08, 0.8), stone);
+lowerTop.position.set(0, -0.32, -1.35);
+kitchen.add(lowerTop);
+
+const island = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.85, 1.15), walnutLight);
+island.position.set(0, -0.78, 0.65);
+kitchen.add(island);
+
+const islandTop = new THREE.Mesh(new THREE.BoxGeometry(2.42, 0.08, 1.37), stone);
+islandTop.position.set(0, -0.34, 0.65);
+kitchen.add(islandTop);
+
+const waterfall = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.86, 1.37), stone);
+waterfall.position.set(-1.15, -0.78, 0.65);
+kitchen.add(waterfall);
+
+const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.42, 16), brass);
+spout.position.set(0.55, -0.08, 0.15);
+kitchen.add(spout);
+const spoutArc = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.02, 8, 24, Math.PI * 0.6), brass);
+spoutArc.position.set(0.55, 0.13, 0.05);
+spoutArc.rotation.set(0, Math.PI / 2, Math.PI * 0.15);
+kitchen.add(spoutArc);
+
+[-0.45, 0.45].forEach((x) => {
+  const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.55, 8), walnutDark);
+  cord.position.set(x, 0.55, 0.65);
+  kitchen.add(cord);
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), glow);
+  bulb.position.set(x, 0.27, 0.65);
+  kitchen.add(bulb);
+});
+
+kitchen.position.y = 0.05;
+scene.add(kitchen);
+
+function resize() {
+  const w = mount.clientWidth, h = mount.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener('resize', resize);
+new ResizeObserver(resize).observe(mount);
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
