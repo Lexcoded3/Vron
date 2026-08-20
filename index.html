@@ -53,9 +53,11 @@ html { scroll-behavior: smooth; }
   --muted:    #7a6858;
   --serif: 'Aquire', 'Inter', sans-serif;
   --sans: 'Inter', -apple-system, sans-serif;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease: linear(0, 0.004, 0.016, 0.035, 0.063, 0.098, 0.141, 0.191, 0.25, 0.316, 0.391, 0.473, 0.563, 0.66, 0.766, 0.879, 1);
+  --ease-out: linear(0, 0.006, 0.025, 0.059, 0.107, 0.169, 0.245, 0.335, 0.439, 0.557, 0.69, 0.838, 1);
+  --ease-expo: linear(0, 0.002, 0.01, 0.033, 0.078, 0.156, 0.274, 0.441, 0.665, 1);
+  --spring: linear(0, 0.001, 0.005, 0.018, 0.043, 0.082, 0.136, 0.206, 0.292, 0.395, 0.516, 0.656, 0.815, 0.92, 0.982, 1.011, 1.02, 1.015, 1.005, 1);
+  --bounce: linear(0, 0.004, 0.016, 0.035, 0.063, 0.098, 0.141, 0.191, 0.25, 0.316, 0.391, 0.473, 0.563, 0.66, 0.766, 0.879, 0.96, 1.015, 1.04, 1.045, 1.035, 1.018, 1.005, 1);
 }
 
 body.light-mode {
@@ -97,7 +99,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   z-index: 99999;
   mix-blend-mode: difference;
   transform: translate(-50%, -50%);
-  transition: width 0.15s var(--ease), height 0.15s var(--ease), background 0.15s;
+  transition: width 0.2s var(--bounce), height 0.2s var(--bounce), background 0.15s;
 }
 
 .cursor-ring {
@@ -109,7 +111,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   pointer-events: none;
   z-index: 99998;
   transform: translate(-50%, -50%);
-  transition: width 0.2s var(--ease), height 0.2s var(--ease),
+  transition: width 0.25s var(--spring), height 0.25s var(--spring),
               border-color 0.2s, opacity 0.2s;
 }
 
@@ -163,7 +165,7 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  transition: opacity 0.6s var(--ease), visibility 0.6s;
+  transition: opacity 0.5s var(--spring), visibility 0.5s;
 }
 .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
@@ -212,7 +214,7 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all 0.35s var(--ease);
+  transition: all 0.4s var(--spring);
 }
 .nav.scrolled {
   background: rgba(13, 7, 4, 0.92);
@@ -261,7 +263,7 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   padding: 0.75rem 1.8rem;
   border: 1px solid rgba(184, 132, 90, 0.35);
   color: var(--cream);
-  transition: all 0.25s var(--ease);
+  transition: all 0.35s var(--bounce);
 }
 .nav-cta:hover {
   background: var(--warm);
@@ -287,22 +289,32 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1.2s var(--ease);
+  transition: opacity 1s var(--spring);
   z-index: 0;
 }
 .hero-slide.active {
   opacity: 1;
   z-index: 1;
 }
-.hero-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(1.3) brightness(0.45) contrast(1.1);
-  transform: scale(1.08);
-  transition: transform 8s var(--ease);
+.hero-image-frame {
+  position: absolute;
+  top: 5%;
+  bottom: 5%;
+  left: 38%;
+  right: -2%;
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 12%);
+  overflow: hidden;
 }
-.hero-slide.active img {
+.hero-image-frame img {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+  filter: saturate(1.3) brightness(0.55) contrast(1.1);
+  transform: scale(1.08);
+  transition: transform 8s linear;
+  margin: -5%;
+}
+.hero-slide.active .hero-image-frame img {
   transform: scale(1);
 }
 
@@ -339,13 +351,16 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
 /* Per-slide text content */
 .hero-slide-content {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
   z-index: 3;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 0 4rem 10rem;
-  max-width: 900px;
+  max-width: 600px;
 }
 .hero-slide-tag {
   font-size: 0.6rem;
@@ -481,7 +496,7 @@ body.cursor-hover .cursor-ring { width: 60px; height: 60px; border-color: rgba(2
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s var(--ease);
+  transition: all 0.4s var(--spring);
   padding: 0;
 }
 .hero-arrow svg {
@@ -766,21 +781,21 @@ body.light-mode .hero-dot.active {
 .reveal {
   opacity: 0;
   transform: translateY(60px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--spring);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 .reveal-left {
   opacity: 0;
   transform: translateX(-40px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--spring);
 }
 .reveal-left.visible { opacity: 1; transform: translateX(0); }
 
 .reveal-right {
   opacity: 0;
   transform: translateX(40px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--spring);
 }
 .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
@@ -794,7 +809,7 @@ body.light-mode .hero-dot.active {
 /* Clip-path reveal for images */
 .clip-reveal {
   clip-path: inset(0 0 100% 0);
-  transition: clip-path 0.9s var(--ease-expo);
+  transition: clip-path 0.7s var(--spring);
 }
 .clip-reveal.visible { clip-path: inset(0 0 0% 0); }
 
@@ -1193,7 +1208,7 @@ body.light-mode .hero-dot.active {
   background: var(--deepest);
   position: relative;
   z-index: 1;
-  transition: all 0.25s var(--ease);
+  transition: all 0.35s var(--bounce);
 }
 .process-step:hover .process-step-num {
   background: rgba(184, 132, 90, 0.1);
@@ -1363,7 +1378,7 @@ body.light-mode .hero-dot.active {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--cream);
-  transition: all 0.3s var(--ease);
+  transition: all 0.4s var(--spring);
   position: relative;
   overflow: hidden;
 }
@@ -1497,7 +1512,7 @@ body.light-mode .hero-dot.active {
   align-items: center;
   justify-content: center;
   color: var(--muted);
-  transition: all 0.3s var(--ease);
+  transition: all 0.4s var(--spring);
   position: relative;
   overflow: hidden;
 }
@@ -1943,7 +1958,7 @@ body.light-mode ::selection { background: var(--warm); color: var(--cream); }
   justify-content: center;
   color: var(--cream);
   text-decoration: none;
-  transition: all 0.3s var(--ease);
+  transition: all 0.4s var(--spring);
   opacity: 0;
   transform: translateY(15px);
 }
@@ -1980,6 +1995,50 @@ body.light-mode .social-fab:hover {
 body, body * {
   transition: background-color 0.6s var(--ease), color 0.5s var(--ease),
               border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+
+
+/* ═══════════════════════════════════════════
+   MOTION SPRING MICRO-INTERACTIONS
+   ═══════════════════════════════════════════ */
+.hero-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+.service-card:hover {
+  transform: translateY(-3px);
+}
+.project-item:hover {
+  transform: translateY(-4px);
+}
+.team-card:hover {
+  transform: translateY(-4px);
+}
+.material-card:hover {
+  transform: translateY(-3px);
+}
+.footer-socials a:hover {
+  transform: translateY(-2px);
+}
+.social-fab:hover {
+  transform: scale(1.12) translateY(-2px);
+}
+.cta-btn:hover {
+  transform: translateY(-2px);
+}
+.filter-btn:hover {
+  transform: translateY(-1px);
+}
+.nav-links a:hover {
+  transform: translateY(-1px);
+}
+.footer-col a:hover {
+  transform: translateX(3px);
+}
+.process-step:hover .process-step-content h3 {
+  transform: translateX(8px);
+}
+.service-detail-text .cta-btn:hover {
+  transform: translateY(-2px) translateX(3px);
 }
 
 </style>
@@ -2031,7 +2090,7 @@ body, body * {
   <div class="hero-slider" id="heroSlider">
     <!-- Slide 1 -->
     <div class="hero-slide active" data-index="0">
-      <img src="assets/hero.jpg" alt="Luxurious living room">
+      <div class="hero-image-frame"><img src="assets/hero.jpg" alt="Luxurious living room"></div>
       <div class="hero-slide-content">
         <div class="hero-slide-tag">Interior Design Studio</div>
         <h1 class="hero-slide-title">Where Space<br>Becomes <em>Soul</em></h1>
@@ -2040,7 +2099,7 @@ body, body * {
     </div>
     <!-- Slide 2 -->
     <div class="hero-slide" data-index="1">
-      <img src="assets/kitchen.jpg" alt="Modern kitchen design">
+      <div class="hero-image-frame"><img src="assets/kitchen.jpg" alt="Modern kitchen design"></div>
       <div class="hero-slide-content">
         <div class="hero-slide-tag">Kitchens</div>
         <h1 class="hero-slide-title">Kitchens<br>That <em>Inspire</em></h1>
@@ -2049,7 +2108,7 @@ body, body * {
     </div>
     <!-- Slide 3 -->
     <div class="hero-slide" data-index="2">
-      <img src="assets/tvunit.jpg" alt="Living room media unit">
+      <div class="hero-image-frame"><img src="assets/tvunit.jpg" alt="Living room media unit"></div>
       <div class="hero-slide-content">
         <div class="hero-slide-tag">Living Spaces</div>
         <h1 class="hero-slide-title">Living<br><em>Redefined</em></h1>
@@ -2367,7 +2426,7 @@ body, body * {
 <!-- CTA -->
 <section class="section cta" id="contact">
   <div class="cta-bg">
-    <img src="assets/hero.jpg" alt="Interior">
+    <div class="hero-image-frame"><img src="assets/hero.jpg" alt="Interior">
   </div>
   <div class="cta-overlay"></div>
   <div class="cta-content">
